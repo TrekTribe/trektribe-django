@@ -3,6 +3,7 @@ from django.db import models
 
 User = get_user_model()
 
+
 class Event(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_time = models.DateTimeField(verbose_name="Data e ora")

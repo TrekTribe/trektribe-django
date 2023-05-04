@@ -1,3 +1,9 @@
 .python-version
 db.sqlite3
 __pycache__/
+/venv/
+/static/
+.coverage
+/htmlcov/
+coverage.xml
+/website/settings_local.py
