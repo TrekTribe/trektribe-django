@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from website.paginations import DefaultLimitOffsetPagination
 
-from .models import Event
+from ..models import Event
 from .serializers import EventDetailSerializer, EventListSerializer
 
 

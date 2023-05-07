@@ -14,12 +14,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
-from trektribe.urls import router as trektribe_router
+from trektribe.api.urls import router as trektribe_router
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path(f"{settings.ADMIN_BASE_URL}/", admin.site.urls),
+    path("api-auth/", include("rest_framework.urls")),
     path("api/trektribe/", include((trektribe_router.urls, "api-trektribe"))),
 ]
