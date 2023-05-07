@@ -113,9 +113,7 @@ according to [git commit man page)](https://git-scm.com/docs/git-commit#Document
 
 ## Test / style with makefile
 
-- `make test` for testing the whole codebase
-
-- `make test-coverage` for testing the whole codebase and providing a coverage report
+- `make tests` for testing the whole codebase and providing a coverage report
 
 - `make style-check` check the code style for the entire codebase
 
