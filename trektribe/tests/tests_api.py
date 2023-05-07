@@ -1,10 +1,8 @@
-import zoneinfo
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.datetime_safe import datetime
 from rest_framework import status
 from rest_framework.test import APITestCase
 
