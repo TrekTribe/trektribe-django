@@ -17,3 +17,6 @@ isort = "*"
 pylint-django = "*"
 pytest-cov = "*"
 pytest-django = "*"
+
+[requires]
+python_version = "3.9"
