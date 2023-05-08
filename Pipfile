@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-filter = "*"
+djangorestframework = "*"
+markdown = "*"
+psycopg = {extras = ["binary"], version = "*"}
+
+[dev-packages]
+black = "*"
+flake8 = "*"
+isort = "*"
+pylint-django = "*"
+pytest-cov = "*"
+pytest-django = "*"
+
+[requires]
+python_version = "3.9"
