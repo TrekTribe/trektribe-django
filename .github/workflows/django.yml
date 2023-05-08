@@ -28,4 +28,4 @@ jobs:
     - name: Run Tests
       run: |
         make style-check
-        make test-coverage
+        make tests
