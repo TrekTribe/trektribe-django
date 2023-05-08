@@ -1,3 +1,7 @@
+requirements:
+	pip install pipenv
+	pipenv sync --dev
+
 style-fix:
 	isort .
 	black .

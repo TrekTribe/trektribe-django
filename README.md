@@ -10,23 +10,11 @@
     cd trektribe
     ```
 
-- Create a virtual environment for this project (Python 3.10.x suggested)
+- Create and enable a virtual environment for this project (Python 3.10.x suggested)
 
-    ```
-    mkdir -p $HOME/.virtualenvs/trektribe
-    python -m venv $HOME/.virtualenvs/trektribe
-    ```
+- Install required packages
 
-- Enable the virtual environment (each time you work on the project)
-
-    `source $HOME/.virtualenvs/trektribe/bin/activate`
-
-- Install required dependencies
-
-    ```
-    pip install --upgrade pip
-    pip install -r requirements_dev.txt
-    ```
+    `make requirements`
 
 - Create/update database with migrations
 
@@ -85,7 +73,11 @@ And launch `manage.py` commands with
     git pull
     ```
 
-- Enable the virtual environment (see instructions above in the setup section)
+- Enable the virtual environment
+
+- Update packages
+
+    `make requirements`
 
 - Update database
 
