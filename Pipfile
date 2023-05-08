@@ -12,10 +12,8 @@ psycopg = {extras = ["binary"], version = "*"}
 
 [dev-packages]
 black = "*"
-coverage = "*"
 flake8 = "*"
 isort = "*"
-pylint = "*"
 pylint-django = "*"
 pytest-cov = "*"
 pytest-django = "*"
