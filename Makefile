@@ -1,5 +1,5 @@
 requirements:
-	pip install pipenv
+	pip install -U pipenv
 	pipenv sync --dev
 
 style-fix:
