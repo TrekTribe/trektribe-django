@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from website.paginations import DefaultLimitOffsetPagination
 
@@ -6,7 +6,7 @@ from ..models import Event
 from .serializers import EventDetailSerializer, EventListSerializer
 
 
-class EventViewSet(ModelViewSet):
+class EventViewSet(ReadOnlyModelViewSet):
     queryset = Event.objects.all()
     pagination_class = DefaultLimitOffsetPagination
     serializers = {
@@ -18,7 +18,3 @@ class EventViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         return self.serializers.get(self.action, self.serializers["default"])
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-        return qs.filter(user=self.request.user)

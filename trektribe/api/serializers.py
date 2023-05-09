@@ -7,27 +7,34 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(source="get_full_name")
+
     class Meta:
         model = User
         fields = [
-            "email",
-            "first_name",
-            "last_name",
+            "id",
+            "full_name",
         ]
 
 
 class EventListSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         model = Event
         fields = [
             "id",
             "title",
             "date",
+            "user",
         ]
 
 
 class EventDetailSerializer(EventListSerializer):
-    user = UserSerializer(read_only=True)
+    user_id = serializers.HiddenField(
+        default=serializers.CurrentUserDefault(),
+        source="user",
+    )
 
     class Meta:
         model = Event

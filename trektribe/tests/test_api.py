@@ -43,14 +43,15 @@ class eventApiTestCase(TrekTribeAPITestCase):
             response = self.client.get(url)
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_filtering_by_sezione(self):
+    def test_get_all_events(self):
         self.client.force_login(self.user1)
 
         url = reverse("api-trektribe:event-list")
         response = self.client.get(url)
-        self.assertEqual(response.json()["count"], 1)
-        self.assertEqual(len(response.json()["results"]), 1)
+        data = response.json()
+        self.assertEqual(data["count"], 2)
+        self.assertEqual(len(data["results"]), 2)
 
         url = reverse("api-trektribe:event-detail", kwargs={"pk": self.event2.pk})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
