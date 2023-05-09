@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import FileExtensionValidator
 from django.db import models
 
 User = get_user_model()
@@ -22,6 +23,13 @@ class Event(BaseModel):
         max_length=128,
     )
     description = models.TextField(verbose_name="Descrizione estesa", blank=True)
+    gpx_track = models.FileField(
+        verbose_name="Traccia GPX",
+        upload_to="gpx_tracks/uploads/%Y/%m/%d/",
+        null=True,
+        blank=True,
+        validators=[FileExtensionValidator(allowed_extensions=["gpx"])],
+    )
 
     class Meta:
         verbose_name = "Evento"
