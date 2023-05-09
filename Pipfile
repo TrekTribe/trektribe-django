@@ -9,6 +9,7 @@ django-filter = "*"
 djangorestframework = "*"
 markdown = "*"
 psycopg = {extras = ["binary"], version = "*"}
+django-cleanup = "*"
 
 [dev-packages]
 black = "*"
