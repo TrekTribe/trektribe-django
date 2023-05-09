@@ -1,0 +1,154 @@
+{% extends 'trektribe/base.html' %}
+{% load static %}
+
+{% block title %}
+<title>{{ event.title }} - {{ event.date }} - TrekTribe</title>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+<style>
+    .map {
+        width: 100%;
+        height: 500px;
+    }
+
+    .elevation-profile-container {
+        width: 100%;
+        height: 200px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<article class="event">
+    <time class="date">
+        {{ event.date }}
+    </time>
+    <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
+    <p>{{ event.description|linebreaksbr }}</p>
+</article>
+
+<div class="gpx-details">
+    <span id="gpx-distance"></span><br>
+    <span id="gpx-elevation-gain-loss"></span><br>
+    <span id="gpx-elevation-min"></span><br>
+    <span id="gpx-elevation-max"></span><br>
+</div>
+<div id="map" class="map"></div>
+<a href="{{ event.gpx_track.url }}">Scarica traccia GPX</a>
+<button onclick="centerMap()">Ripristina visualizzazione mappa</button>
+<div class="elevation-profile-container">
+    <canvas id="route-elevation-chart" style="width:100%;height:100%"></canvas>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script>
+    /**
+     * Refs:
+     * - https://leafletjs.com/index.html
+     * - https://github.com/mpetazzoni/leaflet-gpx
+     */
+    var map = L.map('map').setView([44.400, 7.50], 9);
+
+    var lastEvent = null;
+    function centerMap() {
+        map.fitBounds(lastEvent.target.getBounds());
+    }
+
+    var resizeTimeout;
+    function handleResize() {
+        // clearTimeout(resizeTimeout);
+        // resizeTimeout = setTimeout(centerMap, 500);
+    }
+
+    L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 17,
+        attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+    }).addTo(map);
+
+    var gpx = "{{ event.gpx_track.url }}"; // URL to your GPX file or the GPX itself
+    new L.GPX(gpx, {
+        async: true,
+        marker_options: {
+            startIconUrl: "{% static 'images/pin-icon-start.png' %}",
+            endIconUrl: "{% static 'images/pin-icon-end.png' %}",
+            shadowUrl: "{% static 'images/pin-shadow.png' %}",
+            wptIconUrl: "{% static 'images/pin-icon-wpt.png' %}",
+            wptIconUrls: { "": "{% static 'images/pin-icon-start.png' %}" },
+        }
+    }).on('loaded', (e) => {
+        const ctx = document.getElementById("route-elevation-chart").getContext("2d");
+        const elevationData = e.target.get_elevation_data();
+        const chartData = {
+            labels: elevationData.map(([distance, value, tooltip]) => distance),
+            datasets: [{
+                data: elevationData.map(([distance, value, tooltip]) => value),
+                fill: true,
+                borderColor: '#66ccff',
+                backgroundColor: '#66ccff66',
+                tension: 0.1,
+                pointRadius: 0,
+                spanGaps: true
+            }]
+        };
+        const config = {
+            type: 'line',
+            data: chartData,
+            plugins: [{
+                beforeInit: (chart, args, options) => {
+                    const maxHeight = Math.max(...chart.data.datasets[0].data);
+                    chart.options.scales.x.min = Math.min(...chart.data.labels);
+                    chart.options.scales.x.max = Math.max(...chart.data.labels);
+                    chart.options.scales.y.max = maxHeight + Math.round(maxHeight * 0.2);
+                    chart.options.scales.y1.max = maxHeight + Math.round(maxHeight * 0.2);
+                }
+            }],
+            options: {
+                animation: false,
+                maintainAspectRatio: false,
+                interaction: { intersect: false, mode: 'index' },
+                tooltip: { position: 'nearest' },
+                scales: {
+                    x: { type: 'linear' },
+                    y: { type: 'linear', beginAtZero: true },
+                    y1: { type: 'linear', display: true, position: 'right', beginAtZero: true, grid: { drawOnChartArea: false } },
+                },
+                plugins: {
+                    title: { align: "end", display: true, text: "Distanza, km / Altitudine, m" },
+                    legend: { display: false },
+                    tooltip: {
+                        displayColors: false,
+                        callbacks: {
+                            title: (tooltipItems) => {
+                                return "Distance: " + tooltipItems[0].label + 'km'
+                            },
+                            label: (tooltipItem) => {
+                                return "Elevation: " + tooltipItem.raw + 'm'
+                            },
+                        }
+                    }
+                }
+            }
+        };
+        const chart = new Chart(ctx, config);
+        const gpxDistance = document.getElementById("gpx-distance");
+        gpxDistance.textContent = `Distanza: ${Math.round(e.target.get_distance()) / 1000} km`;
+        const gpxElevationGainLoss = document.getElementById("gpx-elevation-gain-loss");
+        gpxElevationGainLoss.textContent = `Dislivello: ${e.target.get_elevation_gain()} m D+ | ${e.target.get_elevation_loss()} m D-`;
+        const gpxElevationMin = document.getElementById("gpx-elevation-min");
+        gpxElevationMin.textContent = `Altitudine minima: ${e.target.get_elevation_min()} m`;
+        const gpxElevationMax = document.getElementById("gpx-elevation-max");
+        gpxElevationMax.textContent = `Altitudine massima: ${e.target.get_elevation_max()} m`;
+        lastEvent = e;
+        centerMap();
+    }).addTo(map);
+</script>
+{% endblock %}
