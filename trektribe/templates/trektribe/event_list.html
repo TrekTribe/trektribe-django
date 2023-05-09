@@ -7,7 +7,9 @@
         {{ event.date }}
     </time>
     <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
-    <p>{{ event.description|linebreaksbr }}</p>
+    <span class="organizer">
+        Proposta di {{ event.user.get_full_name }}
+    </span>
 </article>
 {% endfor %}
 {% endblock %}

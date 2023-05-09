@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block styles %}
+{% if event.gpx_track %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 <style>
@@ -19,6 +20,7 @@
         height: 200px;
     }
 </style>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -27,25 +29,31 @@
         {{ event.date }}
     </time>
     <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
-    <p>{{ event.description|linebreaksbr }}</p>
+    <span class="organizer">
+        Proposta di {{ event.user.get_full_name }}
+    </span>
+
+    {% if event.gpx_track %}
+    <div class="gpx-details">
+        Distanza: <span id="gpx-distance"></span><br>
+        Dislivello: <span id="gpx-elevation-gain-loss"></span><br>
+        Altitudine min: <span id="gpx-elevation-min"></span><br>
+        Altitudine max: <span id="gpx-elevation-max"></span><br>
+    </div>
+    <div id="map" class="map"></div>
+    <a href="{{ event.gpx_track.url }}">Scarica traccia GPX</a>
+    <button onclick="centerMap()">Ripristina visualizzazione mappa</button>
+    <div class="elevation-profile-container">
+        <canvas id="route-elevation-chart" style="width:100%;height:100%"></canvas>
+    </div>
+    {% endif %}
+
+    <p>{{ event.description|safe }}</p>
 </article>
-
-<div class="gpx-details">
-    <span id="gpx-distance"></span><br>
-    <span id="gpx-elevation-gain-loss"></span><br>
-    <span id="gpx-elevation-min"></span><br>
-    <span id="gpx-elevation-max"></span><br>
-</div>
-<div id="map" class="map"></div>
-<a href="{{ event.gpx_track.url }}">Scarica traccia GPX</a>
-<button onclick="centerMap()">Ripristina visualizzazione mappa</button>
-<div class="elevation-profile-container">
-    <canvas id="route-elevation-chart" style="width:100%;height:100%"></canvas>
-</div>
-
 {% endblock %}
 
 {% block scripts %}
+{% if event.gpx_track %}
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
@@ -140,15 +148,16 @@
         };
         const chart = new Chart(ctx, config);
         const gpxDistance = document.getElementById("gpx-distance");
-        gpxDistance.textContent = `Distanza: ${Math.round(e.target.get_distance()) / 1000} km`;
+        gpxDistance.textContent = `${Math.round(e.target.get_distance()) / 1000} km`;
         const gpxElevationGainLoss = document.getElementById("gpx-elevation-gain-loss");
-        gpxElevationGainLoss.textContent = `Dislivello: ${e.target.get_elevation_gain()} m D+ | ${e.target.get_elevation_loss()} m D-`;
+        gpxElevationGainLoss.textContent = `${e.target.get_elevation_gain()} m D+ | ${e.target.get_elevation_loss()} m D-`;
         const gpxElevationMin = document.getElementById("gpx-elevation-min");
-        gpxElevationMin.textContent = `Altitudine minima: ${e.target.get_elevation_min()} m`;
+        gpxElevationMin.textContent = `${e.target.get_elevation_min()} m`;
         const gpxElevationMax = document.getElementById("gpx-elevation-max");
-        gpxElevationMax.textContent = `Altitudine massima: ${e.target.get_elevation_max()} m`;
+        gpxElevationMax.textContent = `${e.target.get_elevation_max()} m`;
         lastEvent = e;
         centerMap();
     }).addTo(map);
 </script>
+{% endif %}
 {% endblock %}
