@@ -42,7 +42,7 @@
     Open `http://localhost:8000/admin/` from a browser and login with admin credentials
 
 
-## Local settings
+## Local settings
 
 Create a `website/settings_local.py` file with a content like this:
 
