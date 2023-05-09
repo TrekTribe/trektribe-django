@@ -1,0 +1,13 @@
+{% extends 'trektribe/base.html' %}
+
+{% block content %}
+{% for event in events %}
+<article class="event">
+    <time class="date">
+        {{ event.date }}
+    </time>
+    <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
+    <p>{{ event.description|linebreaksbr }}</p>
+</article>
+{% endfor %}
+{% endblock %}
