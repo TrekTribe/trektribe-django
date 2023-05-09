@@ -22,7 +22,7 @@ class EventListSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
-            "date_time",
+            "date",
         ]
 
 

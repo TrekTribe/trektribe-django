@@ -9,8 +9,8 @@ User = get_user_model()
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ["title", "date_time", "user"]
-    list_filter = ["title", "date_time"]
+    list_display = ["title", "date", "user"]
+    list_filter = ["title", "date"]
 
     def get_queryset(self, request: HttpRequest):
         qs = super().get_queryset(request)

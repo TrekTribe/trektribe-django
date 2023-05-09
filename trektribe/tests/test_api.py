@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import date, timezone
 
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -21,11 +21,11 @@ class eventApiTestCase(TrekTribeAPITestCase):
     def setUp(self) -> None:
         super().setUp()
         self.event1 = Event.objects.create(
-            date_time=datetime(2023, 5, 6, 9, 30, tzinfo=timezone.utc),
+            date=date(2023, 5, 6),
             user=self.user1,
         )
         self.event2 = Event.objects.create(
-            date_time=datetime(2023, 5, 7, 9, 30, tzinfo=timezone.utc),
+            date=date(2023, 5, 7),
             user=self.user2,
         )
 
