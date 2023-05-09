@@ -1,4 +1,4 @@
-from datetime import date, timezone
+from datetime import date
 
 from django.contrib.auth import get_user_model
 from django.urls import reverse
