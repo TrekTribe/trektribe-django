@@ -23,6 +23,11 @@ class Event(BaseModel):
         verbose_name="Titolo",
         max_length=128,
     )
+    short_description = models.TextField(
+        verbose_name="Breve descrizione",
+        max_length=500,
+        help_text="Visualizzata nell'elenco escursioni",
+    )
     description = RichTextField(verbose_name="Descrizione estesa", blank=True)
     gpx_track = models.FileField(
         verbose_name="Traccia GPX",

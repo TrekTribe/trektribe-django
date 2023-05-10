@@ -14,6 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/trektribe-logo-transparent.png' %}">
     {% block styles %}
     {% endblock %}
     <noscript>
@@ -29,7 +30,11 @@
         <!-- Intro -->
         <div id="intro">
             <h1>TrekTribe</h1>
-            <p>I tuoi compagni di avventura</p>
+            <p>
+                Esplora i sentieri più belli con i tuoi amici di sempre
+                o fai nuove amicizie nella nostra compagnia di appassionati di trekking.<br>
+                L'avventura non ha limiti quando sei in buona compagnia!
+            </p>
             <!-- <ul class="actions">
                 <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
             </ul> -->
@@ -43,8 +48,12 @@
         <!-- Nav -->
         <nav id="nav">
             <ul class="links">
-                <li{% if tab_selected == "events" %} class="active"{% endif %}><a href="{% url 'event_list' %}">Elenco proposte</a></li>
-                <li{% if tab_selected == "info" %} class="active"{% endif %}><a href="#">Info</a></li>
+                <li{% if tab_selected == "events" %} class="active"{% endif %}>
+                    <a href="{% url 'event_list' %}">Elenco proposte</a>
+                </li>
+                <li{% if tab_selected == "info" %} class="active"{% endif %}>
+                    <a href="#">Info</a>
+                </li>
             </ul>
             <ul class="icons">
                 <!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li> -->

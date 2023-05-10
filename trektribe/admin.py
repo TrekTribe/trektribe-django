@@ -9,7 +9,7 @@ User = get_user_model()
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ["title", "date", "user"]
+    list_display = ["title", "date", "user", "short_description"]
     list_filter = ["title", "date"]
 
     def get_queryset(self, request: HttpRequest):
