@@ -23,6 +23,13 @@
 {% endif %}
 
 <!-- Posts -->
+{% if not page_obj %}
+<article class="post featured">
+    <header class="major">
+        <p>Nessuna proposta per il momento, contattaci per proporne una tu!</p>
+    </header>
+</article>
+{% else %}
 <section class="posts">
     {% for event in page_obj %}
     <article>
@@ -41,6 +48,7 @@
     </article>
     {% endfor %}
 </section>
+{% endif %}
 
 <!-- Footer -->
 <footer>
