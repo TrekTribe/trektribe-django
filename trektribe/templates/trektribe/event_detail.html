@@ -161,14 +161,16 @@
         };
         const chart = new Chart(ctx, config);
         const gpxDistance = document.getElementById("gpx-distance");
-        gpxDistance.textContent = `${Math.round(e.target.get_distance()) / 1000} km`;
+        const distance = Math.round(e.target.get_distance()) / 1000;
+
+        gpxDistance.textContent = `${distance} km`;
         const gpxElevationGainLoss = document.getElementById("gpx-elevation-gain-loss");
         // gpxElevationGainLoss.textContent = `${e.target.get_elevation_gain()} m D+ | ${e.target.get_elevation_loss()} m D-`;
-        gpxElevationGainLoss.textContent = `${e.target.get_elevation_gain()} m D+`;
+        gpxElevationGainLoss.textContent = `${Math.round(e.target.get_elevation_gain())} m D+`;
         const gpxElevationMin = document.getElementById("gpx-elevation-min");
-        gpxElevationMin.textContent = `${e.target.get_elevation_min()} m`;
+        gpxElevationMin.textContent = `${Math.round(e.target.get_elevation_min())} m`;
         const gpxElevationMax = document.getElementById("gpx-elevation-max");
-        gpxElevationMax.textContent = `${e.target.get_elevation_max()} m`;
+        gpxElevationMax.textContent = `${Math.round(e.target.get_elevation_max())} m`;
         lastEvent = e;
         centerMap();
     }).addTo(map);
