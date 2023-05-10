@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from django.core.paginator import Paginator
+from django.db.models import Value
 from django.shortcuts import get_object_or_404, render
 
 from .models import Event
@@ -9,10 +10,24 @@ from .models import Event
 def event_list(request):
     page = request.GET.get("page", 1)
     two_days_ago = date.today() - timedelta(days=2)
-    recent_events = Event.objects.filter(date__gte=two_days_ago).order_by("date")
-    past_events = Event.objects.filter(date__lte=two_days_ago).order_by("date")
-    generic_events = Event.objects.filter(date__isnull=True).order_by("-id")
-    aggregated_events = recent_events | generic_events | past_events
+    recent_events = (
+        Event.objects.filter(date__gte=two_days_ago)
+        # .order_by("date")
+        .annotate(custom_order=Value(1))
+    )
+    generic_events = (
+        Event.objects.filter(date__isnull=True)
+        # .order_by("-modified_date")
+        .annotate(custom_order=Value(2))
+    )
+    past_events = (
+        Event.objects.filter(date__lte=two_days_ago)
+        # .order_by("date")
+        .annotate(custom_order=Value(3))
+    )
+    aggregated_events = recent_events.union(generic_events, past_events).order_by(
+        "custom_order", "date", "-modified_date"
+    )
     next_event = aggregated_events.first()
     paginator = Paginator(aggregated_events[1:], per_page=10)
     page_obj = paginator.get_page(page)
