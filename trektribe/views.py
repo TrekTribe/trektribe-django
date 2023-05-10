@@ -11,8 +11,8 @@ def event_list(request):
     two_days_ago = date.today() - timedelta(days=2)
     recent_events = Event.objects.filter(date__gte=two_days_ago).order_by("date")
     past_events = Event.objects.filter(date__lte=two_days_ago).order_by("date")
-    generic_events = Event.objects.filter(date__isnull=True).order_by("id")
-    aggregated_events = recent_events | past_events | generic_events
+    generic_events = Event.objects.filter(date__isnull=True).order_by("-id")
+    aggregated_events = recent_events | generic_events | past_events
     next_event = aggregated_events.first()
     paginator = Paginator(aggregated_events[1:], per_page=10)
     page_obj = paginator.get_page(page)

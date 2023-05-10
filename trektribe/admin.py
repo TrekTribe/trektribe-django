@@ -26,10 +26,3 @@ class EventAdmin(admin.ModelAdmin):
         return super(EventAdmin, self).formfield_for_foreignkey(
             db_field, request, **kwargs
         )
-
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        if not request.user.is_superuser:
-            # removing `user` field if user is not superuser
-            form.base_fields.pop("user", None)
-        return form
