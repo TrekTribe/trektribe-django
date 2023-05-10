@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-<title>{{ event.title }} - {{ event.date }} - TrekTribe</title>
+<title>{{ event.title }}{% if event.date %} - {{ event.date }}{% endif %} - TrekTribe</title>
 {% endblock %}
 
 {% block styles %}
