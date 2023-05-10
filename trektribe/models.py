@@ -18,10 +18,15 @@ class Event(BaseModel):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, verbose_name="Utente organizzatore"
     )
-    date = models.DateField(verbose_name="Data")
+    date = models.DateField(verbose_name="Data", null=True, blank=True)
     title = models.CharField(
         verbose_name="Titolo",
         max_length=128,
+    )
+    short_description = models.TextField(
+        verbose_name="Breve descrizione",
+        max_length=500,
+        help_text="Visualizzata nell'elenco escursioni",
     )
     description = RichTextField(verbose_name="Descrizione estesa", blank=True)
     gpx_track = models.FileField(
@@ -37,4 +42,7 @@ class Event(BaseModel):
         verbose_name_plural = "Eventi"
 
     def __str__(self) -> str:
-        return f"{self.date.strftime('%Y-%m-%d')} - {self.title}"
+        if self.date:
+            return f"{self.date.strftime('%Y-%m-%d')} - {self.title}"
+        else:
+            return self.title

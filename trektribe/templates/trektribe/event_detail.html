@@ -24,31 +24,44 @@
 {% endblock %}
 
 {% block content %}
-<article class="event">
-    <time class="date">
-        {{ event.date }}
-    </time>
-    <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
-    <span class="organizer">
-        Proposta di {{ event.user.get_full_name }}
-    </span>
+<article class="post featured">
+    <header class="major">
+        {% if event.date %}
+        <span class="date">{{ event.date }}</span>
+        {% endif %}
+        <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
+        <!-- <span>Proposta di {{ event.user.get_full_name }}</span> -->
+        <p>{{ event.short_description|linebreaksbr}}</p>
 
-    {% if event.gpx_track %}
-    <div class="gpx-details">
-        Distanza: <span id="gpx-distance"></span><br>
-        Dislivello: <span id="gpx-elevation-gain-loss"></span><br>
-        Altitudine min: <span id="gpx-elevation-min"></span><br>
-        Altitudine max: <span id="gpx-elevation-max"></span><br>
-    </div>
-    <div id="map" class="map"></div>
-    <a href="{{ event.gpx_track.url }}">Scarica traccia GPX</a>
-    <button onclick="centerMap()">Ripristina visualizzazione mappa</button>
-    <div class="elevation-profile-container">
-        <canvas id="route-elevation-chart" style="width:100%;height:100%"></canvas>
-    </div>
-    {% endif %}
+        {% if event.gpx_track %}
+        <p>
+        <div class="gpx-details">
+            Distanza: <span id="gpx-distance"></span>
+            |
+            Dislivello: <span id="gpx-elevation-gain-loss"></span>
+            |
+            Altitudine min: <span id="gpx-elevation-min"></span>
+            |
+            Altitudine max: <span id="gpx-elevation-max"></span>
+        </div>
+        <div id="map" class="map"></div>
+        <div class="elevation-profile-container">
+            <canvas id="route-elevation-chart" style="width:100%;height:100%"></canvas>
+        </div>
+        <div>
+            <a href="{{ event.gpx_track.url }}" class="button primary" target="_blank">
+                <i class="fas fa-cloud-download-alt"></i>
+                Scarica traccia GPX
+            </a>
 
-    <p>{{ event.description|safe }}</p>
+            <button onclick="centerMap()">Ripristina visualizzazione mappa</button>
+        </div>
+        </p>
+        {% endif %}
+
+        <p>{{ event.description|safe }}</p>
+    </header>
+    <!-- <a href="#" class="image main"><img src="{% static 'images/pic01.jpg' %}" alt="" /></a> -->
 </article>
 {% endblock %}
 
@@ -150,7 +163,8 @@
         const gpxDistance = document.getElementById("gpx-distance");
         gpxDistance.textContent = `${Math.round(e.target.get_distance()) / 1000} km`;
         const gpxElevationGainLoss = document.getElementById("gpx-elevation-gain-loss");
-        gpxElevationGainLoss.textContent = `${e.target.get_elevation_gain()} m D+ | ${e.target.get_elevation_loss()} m D-`;
+        // gpxElevationGainLoss.textContent = `${e.target.get_elevation_gain()} m D+ | ${e.target.get_elevation_loss()} m D-`;
+        gpxElevationGainLoss.textContent = `${e.target.get_elevation_gain()} m D+`;
         const gpxElevationMin = document.getElementById("gpx-elevation-min");
         gpxElevationMin.textContent = `${e.target.get_elevation_min()} m`;
         const gpxElevationMax = document.getElementById("gpx-elevation-max");

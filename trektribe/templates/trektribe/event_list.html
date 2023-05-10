@@ -1,15 +1,67 @@
 {% extends 'trektribe/base.html' %}
+{% load static %}
 
 {% block content %}
-{% for event in events %}
-<article class="event">
-    <time class="date">
-        {{ event.date }}
-    </time>
-    <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
-    <span class="organizer">
-        Proposta di {{ event.user.get_full_name }}
-    </span>
+
+
+<!-- Featured Post -->
+{% if next_event %}
+<article class="post featured">
+    <header class="major">
+        {% if next_event.date %}
+        <span class="date">{{ next_event.date }}</span>
+        {% endif %}
+        <h2><a href="{% url 'event_detail' pk=next_event.pk %}">{{ next_event.title }}</a></h2>
+        <!-- <span>Proposta di {{ next_event.user.get_full_name }}</span> -->
+        <p>{{ next_event.short_description|linebreaksbr}}</p>
+    </header>
+    <!-- <a href="#" class="image main"><img src="{% static 'images/pic01.jpg' %}" alt="" /></a> -->
+    <ul class="actions special">
+        <li><a href="{% url 'event_detail' pk=next_event.pk %}" class="button">Dettagli</a></li>
+    </ul>
 </article>
-{% endfor %}
+{% endif %}
+
+<!-- Posts -->
+<section class="posts">
+    {% for event in page_obj %}
+    <article>
+        <header>
+            {% if event.date %}
+            <span class="date">{{ event.date }}</span>
+            {% endif %}
+            <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
+            <!-- <span class="date">Proposta di {{ event.user.get_full_name }}</span> -->
+        </header>
+        <!-- <a href="#" class="image fit"><img src="{% static 'images/pic02.jpg' %}" alt="" /></a> -->
+        <p>{{ event.short_description|linebreaksbr}}</p>
+        <ul class="actions special">
+            <li><a href="{% url 'event_detail' pk=event.pk %}" class="button">Dettagli</a></li>
+        </ul>
+    </article>
+    {% endfor %}
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="previous"></a>
+        {% endif %}
+        {% for i in page_range %}
+        {% if page_obj.number == i %}
+        <a class="page active" aria-disabled="true">{{ i }}</a>
+        {% else %}
+        {% if i == page_obj.paginator.ELLIPSIS %}
+        <span class="extra">{{ i }}</span>
+        {% else %}
+        <a href="?page={{ i }}" class="page">{{ i }}</a>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="next"></a>
+        {% endif %}
+    </div>
+</footer>
 {% endblock %}
