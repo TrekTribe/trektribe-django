@@ -11,6 +11,8 @@ markdown = "*"
 psycopg = {extras = ["binary"], version = "*"}
 django-cleanup = "*"
 django-ckeditor = "*"
+gunicorn = "*"
+uvicorn = "*"
 
 [dev-packages]
 black = "*"
