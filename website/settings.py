@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "django_filters",
     "trektribe.apps.TrekTribeConfig",
     "django_cleanup.apps.CleanupConfig",
+    "ckeditor",
 ]
 
 MIDDLEWARE = [
@@ -165,4 +166,45 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+}
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar_Basic": [
+            [
+                #  "Source",
+                "-",
+                "Bold",
+                "Italic",
+            ]
+        ],
+        "toolbar_Full": [
+            [
+                "Styles",
+                "Format",
+                "Bold",
+                "Italic",
+                "Underline",
+                "Strike",
+                "SpellChecker",
+                "Undo",
+                "Redo",
+            ],
+            [
+                "Link",
+                "Unlink",
+                # "Anchor"
+            ],
+            [
+                "Image",
+                # "Flash",
+                "Table",
+                "HorizontalRule",
+            ],
+            # ["TextColor", "BGColor"],
+            # ["Smiley", "SpecialChar"],
+            # ["Source"],
+        ],
+        "toolbar": "Full",
+    }
 }
