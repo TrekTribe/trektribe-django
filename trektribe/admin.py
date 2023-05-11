@@ -11,6 +11,7 @@ User = get_user_model()
 class EventAdmin(admin.ModelAdmin):
     list_display = ["title", "date", "user", "short_description"]
     list_filter = ["title", "date"]
+    ordering = ["-date", "-modified_date"]
 
     def get_queryset(self, request: HttpRequest):
         qs = super().get_queryset(request)
