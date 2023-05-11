@@ -10,7 +10,7 @@ User = get_user_model()
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ["title", "date", "user", "short_description"]
-    list_filter = ["title", "date"]
+    list_filter = ["date", ("user", admin.RelatedOnlyFieldListFilter)]
     ordering = ["-date", "-modified_date"]
 
     def get_queryset(self, request: HttpRequest):
