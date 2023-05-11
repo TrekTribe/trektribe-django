@@ -30,7 +30,7 @@
     </header>
 </article>
 {% else %}
-<section class="posts">
+<section id="event_list" class="posts">
     {% for event in page_obj %}
     <article>
         <header>
@@ -51,10 +51,11 @@
 {% endif %}
 
 <!-- Footer -->
+{% if page_obj.paginator.num_pages > 1 %}
 <footer>
     <div class="pagination">
         {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}" class="previous"></a>
+        <a href="{% url 'event_list' %}?page={{ page_obj.previous_page_number }}#event_list" class="previous"></a>
         {% endif %}
         {% for i in page_range %}
         {% if page_obj.number == i %}
@@ -63,13 +64,14 @@
         {% if i == page_obj.paginator.ELLIPSIS %}
         <span class="extra">{{ i }}</span>
         {% else %}
-        <a href="?page={{ i }}" class="page">{{ i }}</a>
+        <a href="{% url 'event_list' %}?page={{ i }}#event_list" class="page">{{ i }}</a>
         {% endif %}
         {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}" class="next"></a>
+        <a href="{% url 'event_list' %}?page={{ page_obj.next_page_number }}#event_list" class="next"></a>
         {% endif %}
     </div>
 </footer>
+{% endif %}
 {% endblock %}
