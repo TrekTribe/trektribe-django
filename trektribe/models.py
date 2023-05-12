@@ -46,3 +46,15 @@ class Event(BaseModel):
             return f"{self.date.strftime('%Y-%m-%d')} - {self.title}"
         else:
             return self.title
+
+
+class Quote(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Utente")
+    date = models.DateField(verbose_name="Data")
+    quote = models.CharField(verbose_name="Citazione", max_length=1028)
+    likes = models.IntegerField(verbose_name="Mi piace")
+    author = models.CharField(verbose_name="Autore", max_length=128)
+
+    class Meta:
+        verbose_name = "Citazione"
+        verbose_name_plural = "Citazioni"
