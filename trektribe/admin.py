@@ -31,8 +31,9 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Quote)
 class QuoteAdmin(admin.ModelAdmin):
-    list_display = ["quote", "date", "user", "author"]
+    list_display = ["quote", "author", "date", "user"]
     list_filter = ["date", ("user", admin.RelatedOnlyFieldListFilter)]
+    search_fields = ["quote", "author"]
 
     def get_queryset(self, request: HttpRequest):
         qs = super().get_queryset(request)
