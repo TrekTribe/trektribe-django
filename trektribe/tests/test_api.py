@@ -44,7 +44,7 @@ class eventApiTestCase(TrekTribeAPITestCase):
             reverse("api-trektribe:event-list"),
             reverse("api-trektribe:event-detail", kwargs={"pk": self.event1.pk}),
             reverse("api-trektribe:quote-list"),
-            reverse("api-trektribe:quote-detail", kwargs={"pk": self.event1.pk}),
+            reverse("api-trektribe:quote-detail", kwargs={"pk": self.quote1.pk}),
         )
         for url in urls:
             response = self.client.get(url)
