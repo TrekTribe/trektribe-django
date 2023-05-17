@@ -1,6 +1,8 @@
 from datetime import date, timedelta
 
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import connection
 from django.db.models import DurationField, ExpressionWrapper, F, Value
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
@@ -8,13 +10,37 @@ from django.utils import timezone
 from .models import Event
 
 
-def event_list(request):
-    page = request.GET.get("page", 1)
+def _get_search_qs(search):
+    if connection.vendor == "postgresql":
+        search_vector = SearchVector(
+            "title", weight="A", config="italian"
+        ) + SearchVector("short_description", weight="B", config="italian")
+        search_query = SearchQuery(search, config="italian")
+        search_rank = SearchRank(search_vector, search_query)
+        qs = Event.objects.annotate(search=search_vector, rank=search_rank).filter(
+            search=search_query
+        )
+    else:
+        search_title_qs = Event.objects.filter(title__icontains=search).annotate(
+            rank=Value(1.0)
+        )
+        search_short_description_qs = (
+            Event.objects.filter(short_description__icontains=search)
+            .exclude(title__icontains=search)
+            .annotate(rank=Value(0.4))
+        )
+        qs = search_title_qs.union(search_short_description_qs)
+    return qs.order_by("-rank")
+
+
+def _get_event_qs():
     today = date.today()
     two_days_ago = today - timedelta(days=2)
     now = timezone.now()
+
+    qs = Event.objects.all()
     recent_events = (
-        Event.objects.filter(date__gte=two_days_ago)
+        qs.filter(date__gte=two_days_ago)
         # .order_by("date")
         .annotate(
             custom_order1=Value(1),
@@ -22,7 +48,7 @@ def event_list(request):
         )
     )
     generic_events = (
-        Event.objects.filter(date__isnull=True)
+        qs.filter(date__isnull=True)
         # .order_by("-modified_date")
         .annotate(
             custom_order1=Value(2),
@@ -30,7 +56,7 @@ def event_list(request):
         )
     )
     past_events = (
-        Event.objects.filter(date__lt=two_days_ago)
+        qs.filter(date__lt=two_days_ago)
         # .order_by("-date")
         .annotate(
             custom_order1=Value(3),
@@ -40,8 +66,25 @@ def event_list(request):
     aggregated_events = recent_events.union(generic_events, past_events).order_by(
         "custom_order1", "custom_order2", "-modified_date"
     )
-    next_event = aggregated_events.first()
-    paginator = Paginator(aggregated_events[1::1], per_page=10)
+    return aggregated_events
+
+
+def event_list(request):
+    page = request.GET.get("page", 1)
+    search = request.GET.get("search", "")
+
+    if search:
+        qs = _get_search_qs(search)
+    else:
+        qs = _get_event_qs()
+
+    next_event = None
+    start_index = 0
+    if not search:
+        next_event = qs.first()
+        start_index = 1
+
+    paginator = Paginator(qs[start_index::1], per_page=10)
     try:
         page_obj = paginator.page(page)
     except PageNotAnInteger:
@@ -61,6 +104,7 @@ def event_list(request):
             "next_event": next_event,
             "page_obj": page_obj,
             "page_range": page_range,
+            "search": search,
         },
     )
 

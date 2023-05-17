@@ -26,7 +26,13 @@
 {% if not page_obj %}
 <article class="post featured">
     <header class="major">
-        <p>Nessuna proposta per il momento, contattaci per proporne una tu!</p>
+        <p>
+            {% if search %}
+            Nessuna proposta con i criteri di ricerca inseriti, contattaci per proporne una tu!
+            {% else %}
+            Nessuna proposta per il momento, contattaci per proporne una tu!
+            {% endif %}
+        </p>
     </header>
 </article>
 {% else %}
