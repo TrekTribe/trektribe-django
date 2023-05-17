@@ -41,20 +41,13 @@ class EventDetailSerializer(EventListSerializer):
         fields = "__all__"
 
 
-class QuoteListSerializer(serializers.ModelSerializer):
+class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
         fields = [
             "id",
             "quote",
-            "date_time",
+            "author",
+            "date",
             "likes",
         ]
-
-
-class QuoteDetailSerializer(EventListSerializer):
-    user = UserSerializer(read_only=True)
-
-    class Meta:
-        model = Quote
-        fields = "__all__"

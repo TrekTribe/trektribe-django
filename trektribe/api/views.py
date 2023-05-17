@@ -3,12 +3,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from website.paginations import DefaultLimitOffsetPagination
 
 from ..models import Event, Quote
-from .serializers import (
-    EventDetailSerializer,
-    EventListSerializer,
-    QuoteDetailSerializer,
-    QuoteListSerializer,
-)
+from .serializers import EventDetailSerializer, EventListSerializer, QuoteSerializer
 
 
 class EventViewSet(ReadOnlyModelViewSet):
@@ -28,12 +23,6 @@ class EventViewSet(ReadOnlyModelViewSet):
 class QuoteViewSet(ReadOnlyModelViewSet):
     queryset = Quote.objects.all()
     pagination_class = DefaultLimitOffsetPagination
-    serializers = {
-        "list": QuoteListSerializer,
-        "default": QuoteDetailSerializer,
-    }
+    serializer_class = QuoteSerializer
     filterset_fields = ["quote", "author"]
     search_fields = ["quote", "author"]
-
-    def get_serializer_class(self):
-        return self.serializers.get(self.action, self.serializers["default"])
