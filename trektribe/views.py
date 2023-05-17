@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import DurationField, ExpressionWrapper, F, Value
+from django.db.models import DurationField, ExpressionWrapper, F, Q, Value
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
@@ -10,11 +10,19 @@ from .models import Event
 
 def event_list(request):
     page = request.GET.get("page", 1)
+    search = request.GET.get("search", "")
     today = date.today()
     two_days_ago = today - timedelta(days=2)
     now = timezone.now()
+
+    base_event_qs = Event.objects.filter(
+        Q(title__icontains=search)  # pylint: disable=unsupported-binary-operation
+        | Q(short_description__icontains=search)
+        | Q(description__icontains=search)
+    )
+
     recent_events = (
-        Event.objects.filter(date__gte=two_days_ago)
+        base_event_qs.filter(date__gte=two_days_ago)
         # .order_by("date")
         .annotate(
             custom_order1=Value(1),
@@ -22,7 +30,7 @@ def event_list(request):
         )
     )
     generic_events = (
-        Event.objects.filter(date__isnull=True)
+        base_event_qs.filter(date__isnull=True)
         # .order_by("-modified_date")
         .annotate(
             custom_order1=Value(2),
@@ -30,7 +38,7 @@ def event_list(request):
         )
     )
     past_events = (
-        Event.objects.filter(date__lt=two_days_ago)
+        base_event_qs.filter(date__lt=two_days_ago)
         # .order_by("-date")
         .annotate(
             custom_order1=Value(3),
@@ -61,6 +69,7 @@ def event_list(request):
             "next_event": next_event,
             "page_obj": page_obj,
             "page_range": page_range,
+            "search": search,
         },
     )
 

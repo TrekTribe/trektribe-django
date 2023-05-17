@@ -54,6 +54,11 @@
                 <li{% if tab_selected == "info" %} class="active"{% endif %}>
                     <a href="#">Info</a>
                 </li>
+                <li style="width:50%">
+                    <form action="{% url 'event_list' %}">
+                        <input type="text" name="search" placeholder="Ricerca" value="{{ search }}" />
+                    </form>
+                </li>
             </ul>
             <ul class="icons">
                 <!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li> -->
