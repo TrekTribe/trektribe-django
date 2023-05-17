@@ -44,7 +44,7 @@ class eventApiTestCase(TrekTribeAPITestCase):
             reverse("api-trektribe:event-list"),
             reverse("api-trektribe:event-detail", kwargs={"pk": self.event1.pk}),
             reverse("api-trektribe:quote-list"),
-            reverse("api-trektribe:quote-detail", kwargs={"pk": self.event1.pk}),
+            reverse("api-trektribe:quote-detail", kwargs={"pk": self.quote1.pk}),
         )
         for url in urls:
             response = self.client.get(url)
@@ -80,3 +80,35 @@ class eventApiTestCase(TrekTribeAPITestCase):
         url = reverse("api-trektribe:quote-detail", kwargs={"pk": self.quote2.pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_event_list_contains_required_data(self):
+        self.client.force_login(self.user1)
+        url = reverse("api-trektribe:event-list")
+        response = self.client.get(url)
+        data = response.json()
+        event = data["results"][0]
+        self.assertIn("id", event)
+        self.assertIn("title", event)
+        self.assertIn("date", event)
+        self.assertIn("user", event)
+        self.assertIn("id", event["user"])
+        self.assertIn("full_name", event["user"])
+        self.assertIn("views_count", event)
+
+    def test_event_detail_contains_required_data(self):
+        self.client.force_login(self.user1)
+        url = reverse("api-trektribe:event-detail", kwargs={"pk": self.event1.pk})
+        response = self.client.get(url)
+        event = response.json()
+        self.assertIn("id", event)
+        self.assertIn("user", event)
+        self.assertIn("id", event["user"])
+        self.assertIn("full_name", event["user"])
+        self.assertIn("created_date", event)
+        self.assertIn("modified_date", event)
+        self.assertIn("date", event)
+        self.assertIn("title", event)
+        self.assertIn("short_description", event)
+        self.assertIn("description", event)
+        self.assertIn("gpx_track", event)
+        self.assertIn("views_count", event)
