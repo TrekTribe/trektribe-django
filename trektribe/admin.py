@@ -9,9 +9,10 @@ User = get_user_model()
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ["title", "date", "user", "short_description"]
+    list_display = ["title", "date", "user", "short_description", "views_count"]
     list_filter = ["date", ("user", admin.RelatedOnlyFieldListFilter)]
     ordering = ["-date", "-modified_date"]
+    readonly_fields = ["views_count"]
 
     def get_queryset(self, request: HttpRequest):
         qs = super().get_queryset(request)

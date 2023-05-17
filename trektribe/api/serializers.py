@@ -27,6 +27,7 @@ class EventListSerializer(serializers.ModelSerializer):
             "title",
             "date",
             "user",
+            "views_count",
         ]
 
 

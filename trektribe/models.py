@@ -38,6 +38,9 @@ class Event(BaseModel):
         blank=True,
         validators=[FileExtensionValidator(allowed_extensions=["gpx"])],
     )
+    views_count = models.BigIntegerField(
+        verbose_name="Contatore visualizzazioni", default=0
+    )
 
     class Meta:
         verbose_name = "Evento"
