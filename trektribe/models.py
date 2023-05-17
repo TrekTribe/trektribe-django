@@ -1,3 +1,5 @@
+from datetime import date
+
 from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
@@ -46,3 +48,21 @@ class Event(BaseModel):
             return f"{self.date.strftime('%Y-%m-%d')} - {self.title}"
         else:
             return self.title
+
+
+class Quote(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Utente")
+    date = models.DateField(verbose_name="Data", default=date.today)
+    quote = models.TextField(verbose_name="Citazione")
+    author = models.CharField(verbose_name="Autore", max_length=128)
+    likes = models.IntegerField(verbose_name="Mi piace", default=0)
+
+    class Meta:
+        verbose_name = "Citazione"
+        verbose_name_plural = "Citazioni"
+
+    def __str__(self) -> str:
+        if self.date:
+            return f"{self.date.strftime('%Y-%m-%d')} - {self.quote} - {self.author}"
+        else:
+            return f"{self.quote} - {self.author}"

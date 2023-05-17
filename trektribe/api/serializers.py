@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from ..models import Event
+from ..models import Event, Quote
 
 User = get_user_model()
 
@@ -39,3 +39,15 @@ class EventDetailSerializer(EventListSerializer):
     class Meta:
         model = Event
         fields = "__all__"
+
+
+class QuoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quote
+        fields = [
+            "id",
+            "quote",
+            "author",
+            "date",
+            "likes",
+        ]
