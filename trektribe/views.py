@@ -40,9 +40,6 @@ def event_list(request):
     aggregated_events = recent_events.union(generic_events, past_events).order_by(
         "custom_order1", "custom_order2", "-modified_date"
     )
-    for event in aggregated_events:
-        print(event.custom_order1, event.custom_order2)
-    print("aggregated_events", aggregated_events)
     next_event = aggregated_events.first()
     paginator = Paginator(aggregated_events[1::1], per_page=10)
     try:
