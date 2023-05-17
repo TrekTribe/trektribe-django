@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "trektribe.apps.TrekTribeConfig",
     "django_cleanup.apps.CleanupConfig",
     "ckeditor",
+    "django.contrib.postgres",
 ]
 
 MIDDLEWARE = [
