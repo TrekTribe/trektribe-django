@@ -2913,8 +2913,13 @@ input, select, textarea {
 		header > .date {
 			display: block;
 			font-size: 0.8rem;
-			height: 1;
-			margin: 0 0 1rem 0;
+			margin: 0;
+			position: relative;
+		}
+		header > .author {
+			display: block;
+			font-size: 0.8rem;
+			margin: -1.5rem 0 0 0;
 			position: relative;
 		}
 
@@ -2944,7 +2949,7 @@ input, select, textarea {
 		}
 
 		header.major {
-			margin: 0 0 4rem 0;
+			margin: 0 0 2rem 0;
 			text-align: center;
 		}
 
@@ -2957,7 +2962,8 @@ input, select, textarea {
 				text-align: center;
 			}
 
-			header.major > .date {
+			header.major > .date,
+			header.major > .author {
 				font-size: 1rem;
 				/* margin: 0 0 4rem 0; */
 			}
@@ -3789,7 +3795,8 @@ input, select, textarea {
 			/* padding: 8rem 8rem 6rem 8rem ; */
 		}
 
-			#main > .post header.major > .date {
+			#main > .post header.major > .date,
+			#main > .post header.major > .author {
 				margin-top: -2rem;
 			}
 
@@ -3806,7 +3813,7 @@ input, select, textarea {
 			@media screen and (max-width: 1280px) {
 
 				#main > .post {
-					padding: 6rem 4rem 4rem 4rem ;
+					padding: 4rem 2rem 2rem 2rem ;
 				}
 
 			}
@@ -3817,7 +3824,8 @@ input, select, textarea {
 					padding: 4rem 2rem 2rem 2rem ;
 				}
 
-					#main > .post header.major > .date {
+					#main > .post header.major > .date,
+					#main > .post header.major > .author {
 						margin-top: -1rem;
 						margin-bottom: 2rem;
 					}

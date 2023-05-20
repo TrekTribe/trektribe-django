@@ -30,8 +30,10 @@
         <span class="date">{{ event.date }}</span>
         {% endif %}
         <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
-        <!-- <span>Proposta di {{ event.user.get_full_name }}</span> -->
-        <p>{{ event.short_description|linebreaksbr}}</p>
+        {% if event.user.user_profile.display_name %}
+        <span class="author">Autore: {{ event.user.user_profile.display_name }}</span>
+        {% endif %}
+    <p>{{ event.short_description|linebreaksbr}}</p>
 
         {% if event.gpx_track %}
         <p>

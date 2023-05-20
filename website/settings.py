@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "trektribe.apps.TrekTribeConfig",
+    "user_profile.apps.UserProfileConfig",
     "django_cleanup.apps.CleanupConfig",
     "ckeditor",
     "django.contrib.postgres",

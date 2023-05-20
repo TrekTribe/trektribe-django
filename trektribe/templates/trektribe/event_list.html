@@ -12,7 +12,9 @@
         <span class="date">{{ next_event.date }}</span>
         {% endif %}
         <h2><a href="{% url 'event_detail' pk=next_event.pk %}">{{ next_event.title }}</a></h2>
-        <!-- <span>Proposta di {{ next_event.user.get_full_name }}</span> -->
+        {% if next_event.user.user_profile.display_name %}
+        <span class="author">Autore: {{ next_event.user.user_profile.display_name }}</span>
+        {% endif %}
         <p>{{ next_event.short_description|linebreaksbr}}</p>
     </header>
     <!-- <a href="#" class="image main"><img src="{% static 'images/pic01.jpg' %}" alt="" /></a> -->
@@ -44,7 +46,9 @@
             <span class="date">{{ event.date }}</span>
             {% endif %}
             <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
-            <!-- <span class="date">Proposta di {{ event.user.get_full_name }}</span> -->
+            {% if event.user.user_profile.display_name %}
+            <span class="author">Autore: {{ event.user.user_profile.display_name }}</span>
+            {% endif %}
         </header>
         <!-- <a href="#" class="image fit"><img src="{% static 'images/pic02.jpg' %}" alt="" /></a> -->
         <p>{{ event.short_description|linebreaksbr}}</p>
