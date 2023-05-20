@@ -13,6 +13,7 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ["date", ("user", admin.RelatedOnlyFieldListFilter)]
     ordering = ["-date", "-modified_date"]
     readonly_fields = ["views_count"]
+    search_fields = ["title", "short_description", "description"]
 
     def get_queryset(self, request: HttpRequest):
         qs = super().get_queryset(request)
