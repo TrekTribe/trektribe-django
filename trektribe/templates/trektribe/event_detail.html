@@ -96,9 +96,10 @@
         maxZoom: 17,
         attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
     }).addTo(map);
+    var marker = L.circleMarker().setRadius(5);
 
-    var gpx = "{{ event.gpx_track.url }}"; // URL to your GPX file or the GPX itself
-    new L.GPX(gpx, {
+    var gpxFile = "{{ event.gpx_track.url }}"; // URL to your GPX file or the GPX itself
+    var gpx = new L.GPX(gpxFile, {
         async: true,
         marker_options: {
             startIconUrl: "{% static 'images/pin-icon-start.png' %}",
@@ -107,7 +108,8 @@
             wptIconUrl: "{% static 'images/pin-icon-wpt.png' %}",
             wptIconUrls: { "": "{% static 'images/pin-icon-start.png' %}" },
         }
-    }).on('loaded', (e) => {
+    });
+    gpx.on('loaded', (e) => {
         const ctx = document.getElementById("route-elevation-chart").getContext("2d");
         const elevationData = e.target.get_elevation_data();
         const chartData = {
@@ -131,6 +133,12 @@
                     chart.options.scales.x.min = Math.min(...chart.data.labels);
                     chart.options.scales.x.max = Math.max(...chart.data.labels);
                     chart.options.scales.y.max = maxHeight + Math.round(maxHeight * 0.2);
+                },
+                beforeEvent(chart, args, pluginOptions) {
+                    const event = args.event;
+                    if (event.type === "mouseout") {
+                        marker.removeFrom(map);
+                    }
                 }
             }],
             options: {
@@ -156,7 +164,13 @@
                             },
                         }
                     }
-                }
+                },
+                events: ["mousemove", "mouseout", "touchstart", "touchmove"],
+                onHover: (e, i) => {
+                    const selectedIndex = i[0].index;
+                    const gpxLatLng = gpx.getLayers()[0].getLayers()[0].getLatLngs()[selectedIndex];
+                    marker.setLatLng(gpxLatLng).addTo(map);
+                },
             }
         };
         const chart = new Chart(ctx, config);
