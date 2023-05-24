@@ -33,19 +33,67 @@
         {% if event.user.user_profile.display_name %}
         <span class="author">Autore: {{ event.user.user_profile.display_name }}</span>
         {% endif %}
-    <p>{{ event.short_description|linebreaksbr}}</p>
+        <p>{{ event.short_description|linebreaksbr}}</p>
+        {% if event.date and not event.is_past_due %}
+        <h4>
+            &gt;&gt;&gt;
+            <a href="{{ event.whatsapp_group }}" class="icon brands fa-whatsapp" target="_blank">
+                <span class="label">Gruppo WhatsApp</span>
+                Gruppo WhatsApp
+            </a>
+            &lt;&lt;&lt;
+        </h4>
+        {% endif %}
+
+        <table>
+            <tbody>
+                {% if event.distance or event.gpx_track %}
+                <tr>
+                    <th>Distanza</th>
+                    <td>
+                        <span id="gpx-distance">{{ event.distance }}</span> km
+                    </td>
+                </tr>
+                {% endif %}
+                {% if event.elevation_gain or event.gpx_track %}
+                <tr>
+                    <th>Dislivello</th>
+                    <td>
+                        <span id="gpx-elevation-gain">{{ event.elevation_gain }}</span> m D+
+                    </td>
+                </tr>
+                {% endif %}
+                {% if event.starting_altitude or event.gpx_track %}
+                <tr>
+                    <th>Altitudine alla partenza</th>
+                    <td>
+                        <span id="gpx-elevation-start">{{ event.starting_altitude }}</span> m
+                    </td>
+                </tr>
+                {% endif %}
+                {% if event.max_altitude or event.gpx_track %}
+                <tr>
+                    <th>Altitudine max</th>
+                    <td>
+                        <span id="gpx-elevation-max">{{ event.max_altitude }}</span> m
+                    </td>
+                </tr>
+                {% endif %}
+                {% if event.difficulty %}
+                <tr>
+                    <th>Difficoltà</th>
+                    <td>
+                        {{ event.difficulty }}
+                        {% if event.difficulty_details %}
+                        <div class="details">{{ event.difficulty_details|linebreaksbr }}</div>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
 
         {% if event.gpx_track %}
-        <p>
-        <div class="gpx-details">
-            Distanza: <span id="gpx-distance"></span>
-            |
-            Dislivello: <span id="gpx-elevation-gain-loss"></span>
-            |
-            Altitudine min: <span id="gpx-elevation-min"></span>
-            |
-            Altitudine max: <span id="gpx-elevation-max"></span>
-        </div>
         <div id="map" class="map"></div>
         <div class="elevation-profile-container">
             <canvas id="route-elevation-chart" style="width:100%;height:100%"></canvas>
@@ -58,7 +106,6 @@
 
             <button onclick="centerMap()">Ripristina visualizzazione mappa</button>
         </div>
-        </p>
         {% endif %}
 
         <p>{{ event.description|safe }}</p>
@@ -174,17 +221,27 @@
             }
         };
         const chart = new Chart(ctx, config);
+        {% if not event.distance %}
         const gpxDistance = document.getElementById("gpx-distance");
-        const distance = Math.round(e.target.get_distance()) / 1000;
+        const distance = Math.round(e.target.get_distance() / 100) / 10;
+        gpxDistance.textContent = distance;
+        {% endif %}
 
-        gpxDistance.textContent = `${distance} km`;
-        const gpxElevationGainLoss = document.getElementById("gpx-elevation-gain-loss");
-        // gpxElevationGainLoss.textContent = `${e.target.get_elevation_gain()} m D+ | ${e.target.get_elevation_loss()} m D-`;
-        gpxElevationGainLoss.textContent = `${Math.round(e.target.get_elevation_gain())} m D+`;
-        const gpxElevationMin = document.getElementById("gpx-elevation-min");
-        gpxElevationMin.textContent = `${Math.round(e.target.get_elevation_min())} m`;
+        {% if not event.elevation_gain %}
+        const gpxElevationGainLoss = document.getElementById("gpx-elevation-gain");
+        gpxElevationGainLoss.textContent = Math.round(e.target.get_elevation_gain());
+        {% endif %}
+
+        {% if not event.starting_altitude %}
+        const gpxElevationStart = document.getElementById("gpx-elevation-start");
+        gpxElevationStart.textContent = Math.round(elevationData[0][1]);
+        {% endif %}
+
+        {% if not event.max_altitude %}
         const gpxElevationMax = document.getElementById("gpx-elevation-max");
-        gpxElevationMax.textContent = `${Math.round(e.target.get_elevation_max())} m`;
+        gpxElevationMax.textContent = Math.round(e.target.get_elevation_max());
+        {% endif %}
+
         lastEvent = e;
         centerMap();
     }).addTo(map);

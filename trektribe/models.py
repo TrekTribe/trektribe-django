@@ -30,6 +30,47 @@ class Event(BaseModel):
         max_length=500,
         help_text="Visualizzata nell'elenco escursioni",
     )
+    whatsapp_group = models.URLField(
+        verbose_name="Link gruppo WhatsApp dedicato",
+        blank=True,
+        help_text=(
+            "Visualizzato solo se è indicata anche la data,"
+            + " e fino a quello stesso giorno."
+        ),
+    )
+    distance = models.FloatField(
+        blank=True,
+        null=True,
+        verbose_name="Lunghezza (km)",
+        help_text="Se non indicata, verrà calcolata dalla traccia GPX",
+    )
+    elevation_gain = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Dislivello (m)",
+        help_text="Se non indicato, verrà calcolato dalla traccia GPX",
+    )
+    starting_altitude = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Altitudine di partenza (m)",
+        help_text="Se non indicata, verrà calcolata dalla traccia GPX",
+    )
+    max_altitude = models.IntegerField(
+        blank=True,
+        null=True,
+        verbose_name="Altitudine massima (m)",
+        help_text="Se non indicata, verrà calcolata dalla traccia GPX",
+    )
+    difficulty = models.CharField(max_length=10, blank=True, verbose_name="Difficoltà")
+    difficulty_details = models.TextField(
+        blank=True, verbose_name="Maggiori dettagli sulla difficoltà"
+    )
+    #  Altitudine partenza: 890 m
+    #  Altitudine massima: 1.763 m
+    #  Difficoltà: E (Escursionisti)
+    # info difficoltà
+
     description = RichTextField(verbose_name="Descrizione estesa", blank=True)
     gpx_track = models.FileField(
         verbose_name="Traccia GPX",
@@ -41,6 +82,10 @@ class Event(BaseModel):
     views_count = models.BigIntegerField(
         verbose_name="Contatore visualizzazioni", default=0
     )
+
+    @property
+    def is_past_due(self):
+        return self.date and date.today() > self.date
 
     class Meta:
         verbose_name = "Evento"
