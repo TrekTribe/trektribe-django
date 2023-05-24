@@ -34,6 +34,14 @@
         <span class="author">Autore: {{ event.user.user_profile.display_name }}</span>
         {% endif %}
     <p>{{ event.short_description|linebreaksbr}}</p>
+    {% if event.date and not event.is_past_due %}
+    <h5>
+        <a href="{{ event.whatsapp_group }}" class="icon brands fa-whatsapp" target="_blank">
+            <span class="label">Gruppo WhatsApp</span>
+            Gruppo WhatsApp
+        </a>
+    </h5>
+    {% endif %}
 
         {% if event.gpx_track %}
         <p>

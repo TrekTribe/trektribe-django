@@ -30,6 +30,14 @@ class Event(BaseModel):
         max_length=500,
         help_text="Visualizzata nell'elenco escursioni",
     )
+    whatsapp_group = models.URLField(
+        verbose_name="Link gruppo WhatsApp dedicato",
+        blank=True,
+        help_text=(
+            "Visualizzato solo se è indicata anche la data,"
+            + " e fino a quello stesso giorno."
+        ),
+    )
     description = RichTextField(verbose_name="Descrizione estesa", blank=True)
     gpx_track = models.FileField(
         verbose_name="Traccia GPX",
@@ -41,6 +49,10 @@ class Event(BaseModel):
     views_count = models.BigIntegerField(
         verbose_name="Contatore visualizzazioni", default=0
     )
+
+    @property
+    def is_past_due(self):
+        return self.date and date.today() > self.date
 
     class Meta:
         verbose_name = "Evento"
