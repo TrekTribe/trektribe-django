@@ -34,7 +34,7 @@
         <span class="author">Autore: {{ event.user.user_profile.display_name }}</span>
         {% endif %}
         <p>{{ event.short_description|linebreaksbr}}</p>
-        {% if event.date and not event.is_past_due %}
+        {% if event.whatsapp_group and event.date and not event.is_past_due %}
         <h4>
             &gt;&gt;&gt;
             <a href="{{ event.whatsapp_group }}" class="icon brands fa-whatsapp" target="_blank">
