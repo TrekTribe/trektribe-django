@@ -111,8 +111,10 @@ def event_list(request):
 
 def event_detail(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    event.views_count += 1
-    event.save()
+    Event.objects.filter(pk=pk).update(
+        views_count=event.views_count + 1,
+        modified_date=event.modified_date,
+    )
     return render(
         request,
         "trektribe/event_detail.html",
