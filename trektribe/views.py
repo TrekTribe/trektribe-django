@@ -7,6 +7,8 @@ from django.db.models import DurationField, ExpressionWrapper, F, Value
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
+from user_profile.models import SocialLink, UserProfile
+
 from .models import Event
 
 
@@ -121,5 +123,19 @@ def event_detail(request, pk):
         {
             "tab_selected": "events",
             "event": event,
+        },
+    )
+
+
+def user_profile_detail(request, pk):
+    user_profile = get_object_or_404(UserProfile, pk=pk)
+    return render(
+        request,
+        "trektribe/user_profile_detail.html",
+        {
+            "user_profile": user_profile,
+            "link_types_with_related_icon": (
+                SocialLink.LinkType.LINK_TYPES_WITH_RELATED_ICON
+            ),
         },
     )

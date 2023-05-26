@@ -31,7 +31,12 @@
         {% endif %}
         <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
         {% if event.user.user_profile.display_name %}
-        <span class="author">Autore: {{ event.user.user_profile.display_name }}</span>
+        <span class="author">
+            Autore:
+            <a href="{% url 'user_profile_detail' pk=event.user.user_profile.id %}">
+                {{ event.user.user_profile.display_name }}
+            </a>
+        </span>
         {% endif %}
         <p>{{ event.short_description|linebreaksbr}}</p>
         {% if event.whatsapp_group and event.date and not event.is_past_due %}

@@ -27,12 +27,24 @@ class SocialLink(models.Model):
         FACEBOOK = "facebook", "Facebook"
         INSTAGRAM = "instagram", "Instagram"
         TELEGRAM = "telegram", "Telegram"
-        WEBSITE = "website", "Sito Web"
         TIKTOK = "tiktok", "TikTok"
         TWITTER = "twitter", "Twitter"
         WHATSAPP = "whatsapp", "WhatsApp"
         YOUTUBE = "youtube", "YouTube"
+        LINKEDIN = "linkedin", "LinkedIn"
+        WEBSITE = "website", "Sito Web"
         OTHER = "other", "Altro"
+
+        LINK_TYPES_WITH_RELATED_ICON = [
+            FACEBOOK,
+            INSTAGRAM,
+            TELEGRAM,
+            TIKTOK,
+            TWITTER,
+            WHATSAPP,
+            YOUTUBE,
+            LINKEDIN,
+        ]
 
     user_profile = models.ForeignKey(
         UserProfile, on_delete=models.CASCADE, related_name="social_links"
