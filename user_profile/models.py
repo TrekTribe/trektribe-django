@@ -35,16 +35,16 @@ class SocialLink(models.Model):
         WEBSITE = "website", "Sito Web"
         OTHER = "other", "Altro"
 
-        LINK_TYPES_WITH_RELATED_ICON = [
-            FACEBOOK,
-            INSTAGRAM,
-            TELEGRAM,
-            TIKTOK,
-            TWITTER,
-            WHATSAPP,
-            YOUTUBE,
-            LINKEDIN,
-        ]
+    LINK_TYPES_WITH_RELATED_ICON = [
+        LinkType.FACEBOOK,
+        LinkType.INSTAGRAM,
+        LinkType.TELEGRAM,
+        LinkType.TIKTOK,
+        LinkType.TWITTER,
+        LinkType.WHATSAPP,
+        LinkType.YOUTUBE,
+        LinkType.LINKEDIN,
+    ]
 
     user_profile = models.ForeignKey(
         UserProfile, on_delete=models.CASCADE, related_name="social_links"

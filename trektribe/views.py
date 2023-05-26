@@ -134,8 +134,6 @@ def user_profile_detail(request, pk):
         "trektribe/user_profile_detail.html",
         {
             "user_profile": user_profile,
-            "link_types_with_related_icon": (
-                SocialLink.LinkType.LINK_TYPES_WITH_RELATED_ICON
-            ),
+            "link_types_with_related_icon": SocialLink.LINK_TYPES_WITH_RELATED_ICON,
         },
     )
