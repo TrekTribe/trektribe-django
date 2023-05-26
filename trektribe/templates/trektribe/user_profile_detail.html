@@ -1,0 +1,40 @@
+{% extends 'trektribe/base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Utente: {{ user_profile.display_name }} - TrekTribe</title>
+{% endblock %}
+
+{% block content %}
+<article class="post featured">
+    <header class="major">
+        <h2>
+            <a href="{% url 'user_profile_detail' pk=user_profile.pk %}">
+                {{ user_profile.display_name }}
+            </a>
+        </h2>
+
+        {% if user_profile.user.event_set.count > 0 %}
+        <span class="author">
+            Escursioni proposte: {{ user_profile.user.event_set.count }}
+        </span>
+        {% endif %}
+
+        <ul class="icons alt">
+            {% for link in user_profile.social_links.all %}
+            <li>
+                <a href="{{ link.url }}" class="icon profile-icon" target="_blank" title="{{ link.get_link_type_display }}">
+                    {% if link.link_type in link_types_with_related_icon %}
+                    <i class="fab fa-{{ link.link_type }}"></i>
+                    {% else %}
+                    <i class="fas fa-link"></i>
+                    {% endif %}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div>{{ user_profile.bio|safe}}</div>
+    </header>
+</article>
+{% endblock %}

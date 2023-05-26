@@ -7,6 +7,7 @@ from .sitemaps import EventSitemap
 urlpatterns = [
     path("", views.event_list, name="event_list"),
     path("event/<int:pk>/", views.event_detail, name="event_detail"),
+    path("users/<int:pk>/", views.user_profile_detail, name="user_profile_detail"),
     path(
         "trektribe-sitemap.xml",
         sitemap,
