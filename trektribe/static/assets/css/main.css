@@ -3847,6 +3847,10 @@ input, select, textarea {
 
 			}
 
+			#main > .post .event-description {
+				margin-top: 1.5rem;
+			}
+
 		#main > .posts {
 			display: -moz-flex;
 			display: -webkit-flex;
