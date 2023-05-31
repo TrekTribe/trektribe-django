@@ -176,38 +176,74 @@ CKEDITOR_CONFIGS = {
     "default": {
         "toolbar_Basic": [
             [
-                #  "Source",
-                "-",
                 "Bold",
                 "Italic",
             ]
         ],
         "toolbar_Full": [
-            [
-                "Styles",
-                "Format",
-                "Bold",
-                "Italic",
-                "Underline",
-                "Strike",
-                "SpellChecker",
-                "Undo",
-                "Redo",
-            ],
-            [
-                "Link",
-                "Unlink",
-                # "Anchor"
-            ],
-            [
-                "Image",
-                # "Flash",
-                "Table",
-                "HorizontalRule",
-            ],
-            # ["TextColor", "BGColor"],
-            # ["Smiley", "SpecialChar"],
-            # ["Source"],
+            {
+                "name": "document",
+                "items": [
+                    "Templates",
+                ],
+            },
+            {
+                "name": "clipboard",
+                "items": [
+                    "Cut",
+                    "Copy",
+                    "Paste",
+                    "PasteText",
+                    "-",
+                    "Undo",
+                    "Redo",
+                ],
+            },
+            {"name": "editing", "items": ["Find", "Replace", "-", "SelectAll"]},
+            "/",
+            {
+                "name": "basicstyles",
+                "items": [
+                    "Bold",
+                    "Italic",
+                    "Underline",
+                    "Strike",
+                    "-",
+                    "RemoveFormat",
+                ],
+            },
+            {
+                "name": "paragraph",
+                "items": [
+                    "NumberedList",
+                    "BulletedList",
+                    "-",
+                    "Outdent",
+                    "Indent",
+                    "-",
+                    "Blockquote",
+                    "-",
+                    "JustifyLeft",
+                    "JustifyCenter",
+                    "JustifyRight",
+                    "JustifyBlock",
+                ],
+            },
+            {"name": "links", "items": ["Link", "Unlink"]},
+            {
+                "name": "insert",
+                "items": [
+                    "Image",
+                    "Flash",
+                    "Table",
+                    "HorizontalRule",
+                ],
+            },
+            "/",
+            {"name": "styles", "items": ["Styles", "Format", "FontSize"]},
+            {"name": "colors", "items": ["TextColor", "BGColor"]},
+            {"name": "tools", "items": ["Maximize", "ShowBlocks"]},
+            {"name": "about", "items": ["About"]},
         ],
         "toolbar": "Full",
     }
