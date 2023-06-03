@@ -3957,6 +3957,10 @@ input, select, textarea {
 
 			}
 
+		#main > form {
+			padding: 0.5rem 1rem;
+		}
+
 		@media screen and (max-width: 736px) {
 
 			#main > * {

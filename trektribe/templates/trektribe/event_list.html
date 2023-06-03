@@ -75,7 +75,7 @@
 <footer>
     <div class="pagination">
         {% if page_obj.has_previous %}
-        <a href="{% url 'event_list' %}?page={{ page_obj.previous_page_number }}#event_list" class="previous"></a>
+        <a href="{% url 'event_list' %}?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search|urlencode }}{% endif %}#event_list" class="previous"></a>
         {% endif %}
         {% for i in page_range %}
         {% if page_obj.number == i %}
@@ -84,12 +84,12 @@
         {% if i == page_obj.paginator.ELLIPSIS %}
         <span class="extra">{{ i }}</span>
         {% else %}
-        <a href="{% url 'event_list' %}?page={{ i }}#event_list" class="page">{{ i }}</a>
+        <a href="{% url 'event_list' %}?page={{ i }}{% if search %}&search={{ search|urlencode }}{% endif %}#event_list" class="page">{{ i }}</a>
         {% endif %}
         {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-        <a href="{% url 'event_list' %}?page={{ page_obj.next_page_number }}#event_list" class="next"></a>
+        <a href="{% url 'event_list' %}?page={{ page_obj.next_page_number }}{% if search %}&search={{ search|urlencode }}{% endif %}#event_list" class="next"></a>
         {% endif %}
     </div>
 </footer>

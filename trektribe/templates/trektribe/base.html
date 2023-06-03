@@ -56,11 +56,6 @@
                 <li{% if tab_selected == "info" %} class="active"{% endif %}>
                     <a href="#">Info</a>
                 </li>
-                <li style="width:50%">
-                    <form action="{% url 'event_list' %}">
-                        <input type="text" name="search" placeholder="Ricerca" value="{{ search }}" />
-                    </form>
-                </li>
             </ul>
             <ul class="icons">
                 <!-- <li><a href="#" class="icon fab fa-twitter"><span class="label">Twitter</span></a></li> -->
@@ -85,6 +80,12 @@
 
         <!-- Main -->
         <div id="main">
+            <form action="{% url 'event_list' %}#main">
+                <input type="text" name="search" placeholder="Cerca escursioni" value="{{ search }}" />
+                {% if search and page_obj %}
+                <span>{{ page_obj.paginator.count }} risultati trovati</span>
+                {% endif %}
+            </form>
             {% block content %}
             {% endblock %}
         </div>
