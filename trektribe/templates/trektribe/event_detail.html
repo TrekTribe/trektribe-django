@@ -41,7 +41,7 @@
         <div>{{ event.short_description|linebreaksbr}}</div>
     </header>
     {% if event.whatsapp_group and event.date and not event.is_past_due %}
-    <h3>
+    <h3 class="whatsapp-group-link">
         &gt;&gt;&gt;
         <a href="{{ event.whatsapp_group }}" target="_blank">
             <i class="fab fa-whatsapp"></i>

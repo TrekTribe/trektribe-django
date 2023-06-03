@@ -3816,6 +3816,10 @@ input, select, textarea {
 			}
 
 			#main > .post.featured {
+				/* text-align: center; */
+			}
+
+			#main > .post.featured .whatsapp-group-link {
 				text-align: center;
 			}
 
