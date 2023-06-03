@@ -41,7 +41,7 @@
         <div>{{ event.short_description|linebreaksbr}}</div>
     </header>
     {% if event.whatsapp_group and event.date and not event.is_past_due %}
-    <h3 class="whatsapp-group-link">
+    <h3 class="align-center">
         &gt;&gt;&gt;
         <a href="{{ event.whatsapp_group }}" target="_blank">
             <i class="fab fa-whatsapp"></i>
@@ -100,11 +100,11 @@
     </table>
 
     {% if event.gpx_track %}
-    <div id="map" class="map"></div>
-    <div class="elevation-profile-container">
+    <div id="map" class="map align-center"></div>
+    <div class="elevation-profile-container align-center">
         <canvas id="route-elevation-chart" style="width:100%;height:100%"></canvas>
     </div>
-    <div>
+    <div class="align-center">
         <a href="{{ event.gpx_track.url }}" class="button primary" target="_blank">
             <i class="fas fa-cloud-download-alt"></i>
             Scarica traccia GPX

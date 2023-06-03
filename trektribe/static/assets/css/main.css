@@ -3819,10 +3819,6 @@ input, select, textarea {
 				/* text-align: center; */
 			}
 
-			#main > .post.featured .whatsapp-group-link {
-				text-align: center;
-			}
-
 			@media screen and (max-width: 1280px) {
 
 				#main > .post {
