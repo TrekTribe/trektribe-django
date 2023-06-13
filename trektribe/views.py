@@ -128,6 +128,10 @@ def event_detail(request, pk):
     )
 
 
+def info(request):
+    return render(request, "trektribe/info.html", {"tab_selected": "info"})
+
+
 def user_profile_detail(request, pk):
     user_profile = get_object_or_404(UserProfile, pk=pk)
     return render(

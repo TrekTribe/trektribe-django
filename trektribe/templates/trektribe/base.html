@@ -51,10 +51,10 @@
         <nav id="nav">
             <ul class="links">
                 <li{% if tab_selected == "events" %} class="active"{% endif %}>
-                    <a href="{% url 'event_list' %}">Elenco proposte</a>
+                    <a href="{% url 'event_list' %}#main">Elenco proposte</a>
                 </li>
                 <li{% if tab_selected == "info" %} class="active"{% endif %}>
-                    <a href="#">Info</a>
+                    <a href="{% url 'info' %}#main">Info</a>
                 </li>
             </ul>
             <ul class="icons">

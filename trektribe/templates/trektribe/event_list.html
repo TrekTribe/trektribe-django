@@ -11,7 +11,7 @@
         {% if next_event.date %}
         <span class="date">{{ next_event.date }}</span>
         {% endif %}
-        <h2><a href="{% url 'event_detail' pk=next_event.pk %}">{{ next_event.title }}</a></h2>
+        <h2><a href="{% url 'event_detail' pk=next_event.pk %}#main">{{ next_event.title }}</a></h2>
         {% if next_event.user.user_profile.display_name %}
         <span class="author">
             Autore:
@@ -50,7 +50,7 @@
             {% if event.date %}
             <span class="date">{{ event.date }}</span>
             {% endif %}
-            <h2><a href="{% url 'event_detail' pk=event.pk %}">{{ event.title }}</a></h2>
+            <h2><a href="{% url 'event_detail' pk=event.pk %}#main">{{ event.title }}</a></h2>
             {% if event.user.user_profile.display_name %}
             <span class="author">
                 Autore:
