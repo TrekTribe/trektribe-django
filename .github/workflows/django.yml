@@ -1,7 +1,7 @@
 name: Django CI
 
 env:
-  PYTHON_VERSION: '3.9'
+  PYTHON_VERSION: '3.11'
   DB_NAME: trektribe_test
   DB_USER: test_user
   DB_PASSWORD: test_password
