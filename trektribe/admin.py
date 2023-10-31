@@ -40,7 +40,7 @@ class QuoteAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest):
         qs = super().get_queryset(request)
         if not request.user.is_superuser:
-            qs = qs.filter(utente=request.user)
+            qs = qs.filter(user=request.user)
         return qs
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
